@@ -4,19 +4,19 @@ import { StyleSheet, Text, View, ScrollView, Image, Button, Alert, ToastAndroid,
 import RNPickerSelect from 'react-native-picker-select';
 import Icon from "react-native-vector-icons/FontAwesome6";
 
-
 const QuestionBox = ({ label, image, options, selectedValue, onValueChange }) => {
   return (
-      <ScrollView style={styles.questionBox}>
-        <Text>{label}</Text>
+      <View style={styles.questionBox}>
+        <Text style={styles.label}>{label}</Text>
         <Image source={image} style={styles.image} />
         <RNPickerSelect
             onValueChange={onValueChange}
             items={options.map(option => ({ label: option, value: option }))}
             value={selectedValue}
             placeholder={{ label: 'Select an answer', value: null }}
+            style={pickerSelectStyles}
         />
-      </ScrollView>
+      </View>
   );
 };
 
@@ -74,7 +74,10 @@ const App = () => {
   return (
       <ScrollView style={styles.container}>
         <StatusBar hidden={true} />
-        <Icon name={"paw"} size={30} color={'#808080'}><Text>Luke's Quiz</Text></Icon>
+        <View style={styles.header}>
+          <Icon name="paw" size={30} color={'#fff'} style={styles.icon} />
+          <Text style={styles.headerText}>Luke's Animal Quiz</Text>
+        </View>
         {questions.map((question, index) => (
             <QuestionBox
                 key={index}
@@ -85,8 +88,8 @@ const App = () => {
                 onValueChange={(value) => handleAnswerChange(value, index)}
             />
         ))}
-        <Button title="Submit Answers" onPress={handleSubmit} />
-        <TouchableOpacity onPress={() => ToastAndroid.show("Good luck!", ToastAndroid.SHORT)}>
+        <Button title="Submit Answers" onPress={handleSubmit} color="#5B84B1FF" />
+        <TouchableOpacity onPress={() => ToastAndroid.show("Good luck!", ToastAndroid.SHORT)} style={styles.goodLuckButton}>
           <Text style={styles.touchableText}>Good Luck!</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -97,20 +100,69 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     flex: 1,
+    backgroundColor: 'lightgrey',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'black',
+    padding: 20,
+    marginBottom: 20,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  headerText: {
+    fontSize: 24,
+    color: 'white',
+    fontWeight: 'bold',
   },
   questionBox: {
+    backgroundColor: '#fff',
+    padding: 15,
     marginBottom: 20,
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 10,
   },
   image: {
     width: '100%',
     height: 200,
-    borderRadius: 10,
+    marginBottom: 15,
   },
   touchableText: {
     textAlign: 'center',
-    color: 'blue',
-    marginTop: 10,
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
     fontSize: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: 'gray',
+    color: 'black',
+    backgroundColor: 'whitesmoke',
+    paddingRight: 30,
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: 'gray',
+    color: 'black',
+    backgroundColor: 'whitesmoke',
+    paddingRight: 30,
   },
 });
 
